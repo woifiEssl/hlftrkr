@@ -32,5 +32,13 @@ class Customer extends Model
         return $this->hasMany('App\Models\Activity');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function competitions()
+    {
+        return $this->belongsToMany('App\Models\Competition', 'customer_competition', 'customer_id', 'competition_id');
+    }
+
 
 }
