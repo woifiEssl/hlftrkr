@@ -37,4 +37,14 @@ class ActivityService
         $activity->save();
     }
 
+    /**
+     * @return ActivityModel[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function getAll()
+    {
+        return $this->activityModel->with('activityType')->get();
+    }
+
+
+
 }

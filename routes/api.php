@@ -26,5 +26,7 @@ Route::group([
 ], function ($router) {
 
     Route::post('/activity', 'ActivityController@createActivity');
+    Route::get('/activities', 'ActivityController@getAllActivities');
+    Route::get('/user/activities', 'ActivityController@getAllActivitiesByUser');
 
 });

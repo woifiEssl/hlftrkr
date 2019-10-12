@@ -24,7 +24,7 @@ class Activity extends Model
         'from',
         'to',
         'type_id',
-        'user_id'
+        'customer_id'
     ];
 
     /**
@@ -32,7 +32,7 @@ class Activity extends Model
      */
     public function activityType()
     {
-        return $this->hasOne('App\Model\ActivityType');
+        return $this->hasOne('App\Models\ActivityType', 'id');
     }
 
     /**
@@ -40,6 +40,6 @@ class Activity extends Model
      */
     public function customers()
     {
-        return $this->hasOne('App\Model\Customer');
+        return $this->hasOne('App\Models\Customer', 'id');
     }
 }
