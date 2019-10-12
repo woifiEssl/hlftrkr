@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\Auth\LoginException;
 use App\Http\Requests\ActivityRequest;
-use App\Http\Requests\LoginRequest;
 use App\Http\Response\ApiResponseBuilder;
 use App\Services\ActivityService;
-use App\Services\CustomerService;
-use App\Services\UserService;
 
 /**
  * Class ActivityController
