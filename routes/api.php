@@ -14,10 +14,17 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-
-    // user - belongsToMany Competition,
-    // entry - type_id, name, value, from, to, user_id
-    // entry_type - id, name, measure, created_at, updated_at
-    // competition - id, name, from, to, created_at, updated_at, difficulty - hasMany Users
     return $request->user();
+});
+
+
+Route::post('/customer/login', 'CustomerController@login');
+
+
+Route::group([
+    'middleware' => 'jwt.auth'
+], function ($router) {
+
+    Route::post('/activity', 'ActivityController@createActivity');
+
 });

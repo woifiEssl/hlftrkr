@@ -2,8 +2,15 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Auth\LoginException;
+use App\Exceptions\Cache\CacheException;
+use App\Exceptions\Cache\InvalidArgumentException;
+use App\Http\Response\ApiResponseBuilder;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use StaticCacheManager\InvalidCacheArgumentException;
 
 class Handler extends ExceptionHandler
 {
@@ -29,7 +36,7 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
+     * @param \Exception $exception
      * @return void
      */
     public function report(Exception $exception)
@@ -38,14 +45,26 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param Exception $exception
+     * @return \Illuminate\Http\JsonResponse|Response|\Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Exception $exception)
     {
+        $code = Response::HTTP_INTERNAL_SERVER_ERROR;
+
+        switch ($exception) {
+            case $exception instanceof LoginException:
+                $code = Response::HTTP_UNAUTHORIZED;
+                break;
+            case $exception instanceof ValidationException:
+                return ApiResponseBuilder::withMultipleErrors(
+                    $exception->validator->errors()->toArray(),
+                    Response::HTTP_UNPROCESSABLE_ENTITY);
+                break;
+                break;
+                break;
+        }
         return parent::render($request, $exception);
     }
 }
